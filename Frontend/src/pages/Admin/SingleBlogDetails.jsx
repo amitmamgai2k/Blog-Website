@@ -16,14 +16,14 @@ function SingleBlogDetails() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white">
 
 
-      <main className="py-8 px-4 sm:px-6 lg:px-8">
+      <main className="py-8 px-4 sm:px-6 lg:px-2">
         {blog ? (
-          <article className="max-w-4xl mx-auto">
+          <article className="max-w-5xl mx-auto">
             {/* Article Container */}
-            <div className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 shadow-lg border border-gray-200 text-white rounded-2xl overflow-hidden">
+            <div className="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 shadow-lg border border-gray-200 text-white rounded-2xl overflow-hidden">
               {/* Article Header */}
               <header className="px-6 sm:px-8 lg:px-12 pt-8 sm:pt-12 pb-6">
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight  mb-6">

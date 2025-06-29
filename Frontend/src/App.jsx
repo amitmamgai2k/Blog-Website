@@ -6,6 +6,7 @@ import AllBlogs from './pages/Admin/AllBlogs'
 import SingleBlogDetails from './pages/Admin/SingleBlogDetails'
 import AdminDashboard from './pages/Admin/AdminDashboard'
 import { Route,Routes } from 'react-router-dom'
+import AboutPage from './pages/user/About'
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
         <Route path='/admindashboard' element={<AdminDashboard />} />
         <Route path='/editblog/:id' element={<EditBlog />} />
         <Route path='/all-blogs' element={<AllBlogs />} />
+        <Route path='/about' element={<AboutPage />} />
+
+        {/* User Home Page */}
         <Route path='/blog/:slug' element={<SingleBlogDetails />} />
 
         {/* Catch-all route for 404 */}
