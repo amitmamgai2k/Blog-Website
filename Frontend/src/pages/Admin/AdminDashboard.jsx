@@ -1,11 +1,35 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import AllBlogs from "./AllBlogs";
 import CreateBlog from "./CreateBlog";
+import axios from "axios";
+
 
 function AdminDashboard() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("dashboard");
+
+  const [totalBlogs, setTotalBlogs] = useState(0);
+  const [todayBlogs, setTodayBlogs] = useState(0);
+ useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/blogs/get-blogs`);
+        setTotalBlogs(response.data.length);
+        setTodayBlogs(response.data.filter(blog => new Date(blog.createdAt).toDateString() === new Date().toDateString()).length);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching blogs:', error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+  console.log(totalBlogs, todayBlogs);
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
@@ -64,10 +88,10 @@ function AdminDashboard() {
       <main className="p-8">
         <div className="max-w-7xl mx-auto">
           <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl p-8 transition-all duration-500">
-            {activeTab === "dashboard" && <DashboardStats />}
+            {activeTab === "dashboard" && <DashboardStats todayBlogs={todayBlogs} totalBlogs={totalBlogs} />}
             {activeTab === "allBlogs" && (
               <div className="animate-fadeIn">
-                <AllBlogs />
+                <AllBlogs  />
               </div>
             )}
             {activeTab === "createBlog" && (
@@ -82,11 +106,11 @@ function AdminDashboard() {
   );
 }
 
-function DashboardStats() {
+function DashboardStats({ todayBlogs, totalBlogs }) {
   return (
     <div className="animate-fadeIn">
       <h2 className="text-2xl font-bold text-white mb-8 text-center">Welcome to Admin Panel</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
         <div className="group bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-sm rounded-xl p-8 border border-purple-300/30 hover:border-purple-300/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-500/20">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-purple-500/30 rounded-full">
@@ -95,7 +119,7 @@ function DashboardStats() {
               </svg>
             </div>
           </div>
-          <div className="text-purple-300 text-4xl font-bold mb-2 group-hover:text-purple-200 transition-colors">125</div>
+          <div className="text-purple-300 text-4xl font-bold mb-2 group-hover:text-purple-200 transition-colors">{totalBlogs}</div>
           <div className="text-white/80 text-lg font-medium">Total Blogs</div>
         </div>
 
@@ -107,21 +131,11 @@ function DashboardStats() {
               </svg>
             </div>
           </div>
-          <div className="text-emerald-300 text-4xl font-bold mb-2 group-hover:text-emerald-200 transition-colors">8</div>
+          <div className="text-emerald-300 text-4xl font-bold mb-2 group-hover:text-emerald-200 transition-colors">{todayBlogs}</div>
           <div className="text-white/80 text-lg font-medium">Today Blogs</div>
         </div>
 
-        <div className="group bg-gradient-to-br from-rose-500/20 to-pink-500/20 backdrop-blur-sm rounded-xl p-8 border border-rose-300/30 hover:border-rose-300/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-rose-500/20">
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-rose-500/30 rounded-full">
-              <svg className="w-8 h-8 text-rose-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </div>
-          </div>
-          <div className="text-rose-300 text-4xl font-bold mb-2 group-hover:text-rose-200 transition-colors">2.3k</div>
-          <div className="text-white/80 text-lg font-medium">Total Likes</div>
-        </div>
+
       </div>
     </div>
   );
